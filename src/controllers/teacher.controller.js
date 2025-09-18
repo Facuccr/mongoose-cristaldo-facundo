@@ -29,7 +29,13 @@ export const getTeacherById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const teacher = await teacherModel.findById(id);
+    const teacher = await teacherModel
+      .findById(id)
+      .populate({ path: "courses", match: { isDeleted: false } });
+    if (!teacher) {
+      return res.status(404).json({ ok: false, msg: "teacher no encontrado" });
+    }
+
     res.status(200).json({ ok: true, data: teacher });
   } catch (error) {
     console.log(error);

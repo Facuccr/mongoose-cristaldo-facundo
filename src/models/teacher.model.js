@@ -12,4 +12,14 @@ const teacherSchema = new Schema(
   { versionKey: false }
 );
 
+teacherSchema.virtual("courses", {
+  // nombre del campo virtual
+  ref: "Course", // modelo al que apunta
+  localField: "_id", //campo en Teacher
+  foreignField: "teacher", //- campo en Course que guarda el id del teacher
+});
+
+teacherSchema.set("toJSON", { virtuals: true });
+teacherSchema.set("toObject", { virtuals: true });
+
 export const teacherModel = model("Teacher", teacherSchema);
